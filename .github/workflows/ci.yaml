@@ -40,9 +40,9 @@ jobs:
           
       - name: Deploy grafana and Helm
         run: |
-          helm install prometheus prometheus-community/prometheus -n monitor --create namespace
+          helm install prometheus prometheus-community/prometheus -n monitor 
           helm upgrade --install grafana grafana/grafana \
-            -n observability \
+            -n monitor \
            --create-namespace \
            --set adminPassword=admin
           
