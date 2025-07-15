@@ -49,7 +49,7 @@ jobs:
 
       - name: 🚀 Install Chaos Mesh
         run: |
-          helm install chaos-mesh chaos-mesh/chaos-mesh \
+          helm upgrade --install chaos-mesh chaos-mesh/chaos-mesh \
           -n chaos-testing --create-namespace \
           --set chaosDaemon.runtime=containerd \
           --set chaosDaemon.socketPath=/run/containerd/containerd.sock \
