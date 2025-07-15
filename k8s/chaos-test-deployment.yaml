@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chaos-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: chaos-app
+  template:
+    metadata:
+      labels:
+        app: chaos-app
+    spec:
+      containers:
+      - name: chaos-app
+        image: nginx
+        ports:
+        - containerPort: 80

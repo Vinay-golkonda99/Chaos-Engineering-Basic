@@ -1,0 +1,14 @@
+apiVersion: chaos-mesh.org/v1alpha1
+kind: PodChaos
+metadata:
+  name: pod-killer
+  namespace: chaos-testing
+spec:
+  action: kill
+  mode: one
+  selector:
+    namespaces:
+      - default
+  duration: "10s"
+  scheduler:
+    cron: "@every 1m"
