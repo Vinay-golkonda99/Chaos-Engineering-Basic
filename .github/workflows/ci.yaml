@@ -49,12 +49,14 @@ jobs:
 
       - name: 🚀 Install Chaos Mesh
         run: |
-          helm upgrade --install chaos-mesh chaos-mesh/chaos-mesh \
-          --namespace chaos-testing \
-          --create-namespace \
-          --set dashboard.create=true \
+          helm install chaos-mesh chaos-mesh/chaos-mesh \
+          -n chaos-testing --create-namespace \
           --set chaosDaemon.runtime=containerd \
-          --set chaosDaemon.socketPath=/run/containerd/containerd.sock
+          --set chaosDaemon.socketPath=/run/containerd/containerd.sock \
+          --set dashboard.create=true \
+          --set controllerManager.enableFilterNamespace=true \
+          --set controllerManager.targetNamespace="chaos-testing" \
+          --set installCRDs=true
 
           
       - name: Deploy App & Monitoring & Chaos
