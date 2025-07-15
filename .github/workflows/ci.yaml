@@ -43,7 +43,6 @@ jobs:
           helm install prometheus prometheus-community/prometheus -n monitor 
           helm upgrade --install grafana grafana/grafana \
             -n monitor \
-           --create-namespace \
            --set adminPassword=admin
           
       - name: Deploy App & Monitoring & Chaos
