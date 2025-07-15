@@ -36,6 +36,7 @@ jobs:
         run: |
           helm repo add grafana https://grafana.github.io/helm-charts
           helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+          helm repo add chaos-mesh https://charts.chaos-mesh.org
           helm repo update
           
       - name: Deploy grafana and Helm
@@ -45,6 +46,16 @@ jobs:
             -n monitor \
            --set adminPassword=admin \
            --set service.type=LoadBalancer
+
+      - name: 🚀 Install Chaos Mesh
+        run: |
+          helm upgrade --install chaos-mesh chaos-mesh/chaos-mesh \
+          --namespace chaos-testing \
+          --create-namespace \
+          --set dashboard.create=true \
+          --set chaosDaemon.runtime=containerd \
+          --set chaosDaemon.socketPath=/run/containerd/containerd.sock
+
           
       - name: Deploy App & Monitoring & Chaos
         run: |
