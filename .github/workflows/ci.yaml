@@ -1,0 +1,56 @@
+name: chaos-test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: 🚀 Deploy to GKE
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v3
+
+      - name: 🔐 Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: ☁️ Set up gcloud CLI
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          install_components: 'kubectl'
+
+      - name: 🧭 Get GKE Credentials
+        run: |
+          gcloud container clusters get-credentials "${{ secrets.GKE_CLUSTER_NAME }}" --region "${{ secrets.GKE_REGION }}"
+
+      - name: 📦 Install Helm
+        uses: azure/setup-helm@v3
+
+      - name: Add Helm Repos
+        run: |
+          helm repo add grafana https://grafana.github.io/helm-charts
+          helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+          helm repo update
+          
+      - name: Deploy grafana and Helm
+        run: |
+          helm install prometheus prometheus-community/prometheus -n monitor --create namespace
+          helm upgrade --install grafana grafana/grafana \
+            -n observability \
+           --create-namespace \
+           --set adminPassword=admin
+          
+      - name: Deploy App & Monitoring & Chaos
+        run: |
+          kubectl apply -f k8s/
+
+      - name: Verify Deployments
+        run: |
+          kubectl get pods -A
+          kubectl get svc -A
