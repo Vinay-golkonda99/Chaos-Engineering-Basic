@@ -10,7 +10,5 @@ spec:
     namespaces:
       - default
     labelSelectors:
-      app: chaos-app
+      app: your-app-label
   duration: "30s"
-  scheduler:
-    cron: "@every 1m"
