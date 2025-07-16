@@ -12,6 +12,8 @@ spec:
       labels:
         app: chaos-app
     spec:
+      serviceAccountName: github-actions
+    spec:
       containers:
       - name: chaos-app
         image: nginx
