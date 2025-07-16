@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: chaos-app
-  namespace: default
+  namespace: chaos-testing
 spec:
   replicas: 3
   selector:
