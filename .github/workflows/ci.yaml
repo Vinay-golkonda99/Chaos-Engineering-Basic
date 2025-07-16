@@ -62,7 +62,7 @@ jobs:
 
       - name: Deploy App & Monitoring & Chaos
         run: |
-          kubectl apply -f k8s/
+          kubectl apply -f k8s/ --namespace chaos-testing
 
       - name: Verify Deployments
         run: |
