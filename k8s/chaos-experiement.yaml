@@ -8,7 +8,7 @@ spec:
   mode: one
   selector:
     namespaces:
-      - default
+      - chaos-testing
     labelSelectors:
       app: chaos-app
   duration: "30s"
